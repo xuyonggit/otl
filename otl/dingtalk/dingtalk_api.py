@@ -63,7 +63,7 @@ class DingTalkApp:
         headers = {'Content-Type': 'application/json'}
         resp = requests.post(self.robot_url, headers=headers, data=json.dumps(contents))
         if resp.status_code == 200:
-            if resp.json().get('errcode') != 100000:
+            if resp.json().get('errcode') != 0:
                 raise DingTalkException(resp.json().get('errmsg'))
             else:
                 return True, "DingDing notify send succeed! "
