@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# Author: xuyong
-# Date: 2020-05-28
 # Desc: 封装发送邮件模块
 #
 

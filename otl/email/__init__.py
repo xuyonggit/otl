@@ -1,1 +1,1 @@
-from .email_api import EmailApi
+from .email_api import EmailApi, EmailTools
