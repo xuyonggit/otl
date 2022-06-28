@@ -32,32 +32,33 @@ class EmailTools(object):
         self.str = """<html>
         <head>
         <style type="text/css">
-            #table-1
+            table.table-otl
         {
             border-collapse: collapse;
             margin: 0 auto;
             text-align: center;
         }
-        #table-1  td, #table-1  th
+        table.table-otl  td, table.table-otl  th
         {
             border: 1px solid #cad9ea;
-            color: #666;
+            color: #666666;
             height: 30px;
         }
-        #table-1  thead th
+        table.table-otl  thead th
         {
             background-color: #CCE8EB;
             width: 100px;
         }
-        #table-1  tr:nth-child(odd)
+        table.table-otl  tr:nth-child(odd)
         {
-            background: #fff;
+            background: #ffffff;
         }
-        #table-1  tr:nth-child(even)
+        table.table-otl  tr:nth-child(even)
         {
             background: #F5FAFA;
         }
     </style></head>
+    <body>
         """
 
 
@@ -97,7 +98,7 @@ class EmailTools(object):
         """
         title = kwargs['title'] if 'title' in kwargs.keys() else None
 
-        msg = """<table width="100%" id="table-1">"""
+        msg = """<table class="table-otl">"""
         if not isinstance(data, list): raise TypeError ("data must be [ list ], give {}".format(type(data)))
         if title:
             msg += """<caption> <h2> {} </h2></caption>""".format(title)
@@ -146,7 +147,6 @@ class EmailTools(object):
         if self.CC_LIST:
             msgAlternative['Cc'] = Header(",".join(x for x in self.CC_LIST))
 
-        #
         # 设定纯文本信息
         msgHtml = MIMEText(self.__get_str(), 'html', 'utf-8')
         msgAlternative.attach(msgHtml)
