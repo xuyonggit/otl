@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # Desc: 封装发送邮件模块
 #
-
+import email.utils
 from smtplib import SMTP_SSL, SMTP, SMTPException
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
+from email.utils import formataddr
 import random
 import os
 
@@ -15,6 +16,7 @@ class EmailTools(object):
     def __init__(self, subject, user, password, smtp,to_list, cc_list, port):
         self.Subject = subject
         self.USER = user
+        self.FROM = ''
         self.PW = password
         self.SMTP = smtp
         self.PORT = port
@@ -122,6 +124,9 @@ class EmailTools(object):
         if not isinstance(s, str): raise TypeError ("s must be str or int, but give {}".format(type(s)))
         self.str += '''<strong> {} </strong><br>'''.format(s)
 
+    def _set_from(self, _from):
+        self.FROM = _from
+
     def __get_str(self):
         return self.str
 
@@ -142,10 +147,11 @@ class EmailTools(object):
     def send_email(self):
         msgAlternative = MIMEMultipart()
         msgAlternative['From'] = self.USER
-        msgAlternative['Subject'] = Header(self.Subject, 'utf-8')
-        msgAlternative['To'] = Header(",".join(x for x in self.TO_LIST))
+        msgAlternative['Subject'] = Header(self.Subject)
+        msgAlternative['To'] = ",".join(self.TO_LIST)
+        msgAlternative['Message-id'] = email.utils.make_msgid()
         if self.CC_LIST:
-            msgAlternative['Cc'] = Header(",".join(x for x in self.CC_LIST))
+            msgAlternative['Cc'] = Header(",".join(self.CC_LIST))
 
         # 设定纯文本信息
         msgHtml = MIMEText(self.__get_str(), 'html', 'utf-8')
@@ -173,15 +179,15 @@ class EmailTools(object):
             except SMTPException as e:
                 return False, "邮件发送失败: {}".format(e)
         elif self.PORT == 465:
+            smtp_obj = SMTP_SSL(self.SMTP, self.PORT)
             try:
-                smtp_obj = SMTP_SSL(self.SMTP, self.PORT)
-                smtp_obj.ehlo()
                 smtp_obj.login(self.USER, self.PW)
                 smtp_obj.sendmail(self.USER, self.TO_LIST + self.CC_LIST, msgAlternative.as_string())
-                smtp_obj.close()
                 return True, "邮件发送成功"
             except SMTPException as e:
                 return False, "邮件发送失败: {}".format(e)
+            finally:
+                smtp_obj.quit()
 
 
 class EmailApi(object):
