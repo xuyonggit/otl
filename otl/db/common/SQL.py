@@ -8,9 +8,9 @@ class Sql(object):
         elif sql.startswith("DELETE") or sql.startswith("delete"):
             if 'where' not in sql and 'WHERE' not in sql:
                 return "delete 语句必须包含条件where", ""
-        # sql 语句中尽量避免in操作
-        elif " in " in sql:
-            return "sql中不允许使用in操作", ""
+        # # sql 语句中尽量避免in操作
+        # elif " in " in sql:
+        #     return "sql中不允许使用in操作", ""
         return None, sql
 
 
