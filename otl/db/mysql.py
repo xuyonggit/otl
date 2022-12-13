@@ -115,7 +115,7 @@ class MysqlDbBase:
         :param sql:
         :return:
         """
-        self._update("Delete", sql, params)
+        return self._update("Delete", sql, params)
 
     def _update(self, modify_type, sql, params=()) -> int:
         conn, cur = self._get_connection()
