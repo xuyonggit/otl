@@ -122,7 +122,6 @@ class EmailTools(object):
                     msg += """<td>{}</td>""".format(d)
             msg += """</tr>"""
         msg += """</table>"""
-        print(msg)
         self.add_str(msg)
 
     def add_strong_str(self, s):
