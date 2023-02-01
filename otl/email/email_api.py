@@ -115,9 +115,14 @@ class EmailTools(object):
         for i in data:
             msg += """<tr>"""
             for d in i:
-                msg += """<td>{}</td>""".format(d)
+                if isinstance(d, dict):
+                    msg += """<td {}>{}</td>""".format(
+                        ' '.join(str(x) + '="' + str(y) + '"' for x, y in d.items() if x != 'value'), d['value'])
+                else:
+                    msg += """<td>{}</td>""".format(d)
             msg += """</tr>"""
         msg += """</table>"""
+        print(msg)
         self.add_str(msg)
 
     def add_strong_str(self, s):
