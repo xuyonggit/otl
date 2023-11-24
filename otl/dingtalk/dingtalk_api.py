@@ -78,7 +78,7 @@ class DingTalkApp:
             at_users['isAtAll'] = 'true'
         else:
             for user in users.split(','):
-                if re.findall(r"1[3-9]\d{9}", user):
+                if re.findall(r"1[3-9]\d{9}$", user):
                     if 'atMobiles' not in at_users.keys():
                         at_users['atMobiles'] = [user]
                     else:
